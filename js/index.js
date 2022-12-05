@@ -3,6 +3,7 @@ window.addEventListener('load', () => {
     // Start button event listener
     const startBtn = document.querySelector('button.start');
     startBtn.addEventListener('click', () => {
+        game = new Game();
         game.start();
     });
 
@@ -10,11 +11,8 @@ window.addEventListener('load', () => {
     canvas.addEventListener('click', (event) => {
         const x = event.offsetX;
         const y = event.offsetY;
-        stopCar(x, y);
+        clickCar(x, y);
     })
-    
-    // FOR TESTING
-    game.start();
 
 
 });

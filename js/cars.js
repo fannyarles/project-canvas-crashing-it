@@ -1,28 +1,32 @@
 const carLaneTopToBottom = {
-    laneStartPointX: 150,
-    laneStartPointY: 150,
+    laneStartPointX: 415,
+    laneStartPointY: -50,
     cars: []
 }
 
 const carLaneBottomToTop = {
-    laneStartPointX: 150,
-    laneStartPointY: 150,
+    laneStartPointX: 355,
+    laneStartPointY: canvas.height + 50,
     cars: []
 }
 
 const carLaneLeftToRight = {
-    laneStartPointX: -55,
+    laneStartPointX: -50,
     laneStartPointY: 355,
     cars: []
 }
 
 const carLaneRightToLeft = {
-    laneStartPointX: 150,
-    laneStartPointY: 150,
+    laneStartPointX: canvas.width + 50,
+    laneStartPointY: 415,
     cars: []
 }
 
 const carLanes = [carLaneTopToBottom, carLaneBottomToTop, carLaneLeftToRight,carLaneRightToLeft];
+
+const randomDelay = () => {
+    return Math.floor(Math.random() * (110 - 60) + 60);
+}
 
 
 class GameComponents {
@@ -56,28 +60,23 @@ class GameComponents {
 
 class Car extends GameComponents {
 
-    constructor(color) {
+    constructor(lane, height, width, color) {
         super();
         this.isMoving = true;
-        this.height = 30;
-        this.width = 55;
         this.color = color;
         
         // FOR TESTING
-        this.lane = carLanes[2];
+        this.lane = lane;
+        this.height = height;
+        this.width = width;
 
         this.x = this.lane.laneStartPointX;
         this.y = this.lane.laneStartPointY;
-        // this.lane = carLanes[Math.floor(Math.random() * 4)];
     }
 
 }
 
-class Cat extends GameComponents {
-
-}
-
-class Pedestrian extends GameComponents {
+class Dino extends GameComponents {
 
 }
 
@@ -88,21 +87,40 @@ const updateCars = () => {
     for ( let i = 0 ; i < carLanes.length ; i++ ) {
         for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
             if ( checkCrash(carLanes[i], carLanes[i].cars[j], j) ) {
-                alert('crash!')
-                return game.isOn = false;
+                game.isOn = false;
             }
         }
     }
 
-    if (game.frames % 150 === 0) {
+    if (game.frames % 50 === 0) {
         const randColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
-        const newCar = new Car(randColor);
-        // console.log(newCar)
-        carLanes[2].cars.push(newCar)
+        let randLaneNum = game.lastLane;
+        while ( randLaneNum === game.lastLane ) { randLaneNum = Math.floor(Math.random() * 4) }
+        game.lastLane = randLaneNum;
+        const lane = carLanes[randLaneNum];
+
+        let height, width;
+
+        if (randLaneNum === 0 || randLaneNum === 1) {
+            height = 45;
+            width = 30;
+        } else {
+            height = 30;
+            width = 45;
+        } 
+
+        const delay = randomDelay();
+        console.log(delay);
+        setTimeout(() => { 
+            const newCar = new Car(lane, height, width, randColor)
+            lane.cars.push(newCar)
+        }, delay );
+        
     }
 
     // Delete cars out of canvas
     // Otherwise, make it move
+
     carLanes.forEach(lane => {
         lane.cars.forEach((car, i) => {
 
@@ -112,13 +130,16 @@ const updateCars = () => {
                 if ( car.isMoving ) {
                     switch(lane) {
                         case carLaneLeftToRight:
-                             car.x += 2;
+                             car.x += 2.5;
                             break;
                         case carLaneRightToLeft:
+                            car.x -= 2.5;
                             break;
                         case carLaneTopToBottom:
+                            car.y += 2.5;
                             break;
                         case carLaneBottomToTop:
+                            car.y -= 2.5;
                             break;
                     }
                 }
@@ -132,7 +153,7 @@ const updateCars = () => {
     game.frames++;
 }
 
-const stopCar = (x, y) => {
+const clickCar = (x, y) => {
 
     // Handle click on cars
     for ( let i = 0 ; i < carLanes.length ; i++ ) {
@@ -147,11 +168,6 @@ const stopCar = (x, y) => {
             }
         }
     }
-    carLanes.forEach(lane => {
-        lane.cars.forEach((car, i) => {
-
-        });
-    });
     
 }
 
@@ -169,11 +185,8 @@ const checkCrash = (carLane, carObj, carIndex) => {
         });
     });
     
-    let crashed = otherCars.some(otherCar => !(otherCar.right() < carObj.left() || otherCar.left() > carObj.right()) );
+    let crashed = otherCars.some(otherCar => !( otherCar.right() < carObj.left() || otherCar.left() > carObj.right() || otherCar.top() > carObj.bottom() || otherCar.bottom() < carObj.top() ));
     
-    if (crashed) { alert('crash!')}
     return crashed;
     
 }
-
-// Delete cars out of canvas --> more or less cars per lane depending on the level

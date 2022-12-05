@@ -4,7 +4,7 @@
 
 ## Description
 
-Traffic Jam puts the player in charge of traffic control at a crossroad. They have to prevent collisions between cars, for that, they can stop each car by clicking on it. The game stops when a collision happens. The score is time-based : the longer the traffic runs smoothly, the best it is!
+Traffic Jam puts the player in charge of traffic control at a crossroad. They have to prevent collisions between cars, for that, they can stop each car by clicking on it. The game stops when a collision happens. The score is based on the numbers of cars that successfully crossed the map.
 
 ## MVP
 

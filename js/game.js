@@ -13,18 +13,29 @@ const updateGame = () => {
 
     // check game over
     checkGameOver();
+
     // update score
 }
 
-const game = {
-    frames: 0,
-    isOn: true,
-    start: () => {
+class Game {
+    constructor() {
+        this.frames = 0;
+        this.isOn = true;
+        this.interval;
+        this.lastLane = 0;
+        this.score = 0;
+    }
+
+    start() {
         // remove instructions
         const instructions = document.querySelector('section#instructions');
         instructions.style.display = 'none';
         // console.log('Start game!');
         this.interval = setInterval(updateGame, 20);
+    }
+
+    stop() {
+        clearInterval(this.interval);
     }
 }
 
@@ -39,6 +50,6 @@ const background = {
 
 const checkGameOver = () => {
     if ( !game.isOn ) {
-        alert('Game Over!');
-    }
+        game.stop();
+    } 
 }
