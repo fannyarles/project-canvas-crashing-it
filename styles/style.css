@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;500;600;700;800;900;1000&display=swap');
+
+html {
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 15px;
+}
+
+#instructions {
+    margin: 50px auto;
+    width: 30%;
+    text-align: center;
+}
+
+button {
+    margin-top: 50px;
+}
+
+canvas {
+    display: block;
+    width: 800px;
+    border-radius: 6px;
+    margin: 30px auto;
+}
