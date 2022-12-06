@@ -21,10 +21,10 @@ h2 {
     font-size: 1.2rem;
     text-transform: uppercase;
     font-weight: 700;
+    margin-bottom: 40px;
 }
 
 ul {
-    margin-top: 40px;
 }
 
 li {
@@ -97,14 +97,27 @@ main {
     margin-right: 50px;
 }
 
-button {
-    margin-top: 50px;
+input.start, button.reset {
+    margin-top: 30px;
     padding: 20px 65px;
     border: 0px;
     background-color: coral;
     color: white;
     letter-spacing: 1px;
     font-size: 1.3rem;
+    text-transform: uppercase;
+    font-weight: 800;
+    border-radius: 4px;
+}
+
+button.change-player {
+    margin-top: 20px;
+    padding: 18px 30px;
+    border: 0px;
+    background-color: grey;
+    color: white;
+    letter-spacing: 1px;
+    font-size: 1rem;
     text-transform: uppercase;
     font-weight: 800;
     border-radius: 4px;

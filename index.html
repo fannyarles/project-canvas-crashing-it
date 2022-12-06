@@ -21,6 +21,7 @@
 
         <main>
             <section id="splash" heigth="800" width="800">
+                <h2>Instructions</h2>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam venenatis pharetra aliquet. Vivamus
                     mollis
@@ -39,9 +40,12 @@
                 </p>
 
                 <div>
-                    <input type="text" placeholder="Enter your name" /><br />
 
-                    <button class="start">Start Game!</button>
+                    <form action="#">
+                        <input type="text" placeholder="Enter your name" required /><br />
+
+                        <input type="submit" class="start" value="Start Game!" />
+                    </form>
                 </div>
             </section>
 
@@ -55,8 +59,8 @@
                 <p class="result">
 
                 </p>
-                <button class="reset">New Game!</button>
-                <button class="change-player">New player</button>
+                <button class="reset">Try again!</button>
+                <button class="change-player">Switch player</button>
             </section>
 
         </main>

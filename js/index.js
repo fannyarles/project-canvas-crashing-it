@@ -1,7 +1,7 @@
 window.addEventListener('load', () => {
 
     // Start button event listener
-    const startBtn = document.querySelector('button.start');
+    const startBtn = document.querySelector('input.start');
     startBtn.addEventListener('click', () => {
         if ( typeof game === 'undefined' ) {
             game = new Game();
