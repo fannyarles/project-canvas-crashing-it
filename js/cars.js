@@ -84,9 +84,19 @@ class Dino extends GameComponents {
 
 const updateCars = () => {
 
+    if ( game.score === 0 && game.frames === 0 ) {
+        for ( let i = 0 ; i < carLanes.length ; i++ ) {
+            for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
+                carLanes[i].cars = [];                
+            }
+        }
+    }
+
     for ( let i = 0 ; i < carLanes.length ; i++ ) {
         for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
             if ( checkCrash(carLanes[i], carLanes[i].cars[j], j) ) {
+                stopAllCars();
+                // handleExplosion(carLanes[i].cars[j]);
                 game.isOn = false;
             }
         }
@@ -110,7 +120,7 @@ const updateCars = () => {
         } 
 
         const delay = randomDelay();
-        console.log(delay);
+
         setTimeout(() => { 
             const newCar = new Car(lane, height, width, randColor)
             lane.cars.push(newCar)
@@ -125,6 +135,7 @@ const updateCars = () => {
         lane.cars.forEach((car, i) => {
 
             if ( car.isOffCanvas() ) {
+                game.score++;
                 lane.cars.splice(i, 1);
             } else {
                 if ( car.isMoving ) {
@@ -171,6 +182,17 @@ const clickCar = (x, y) => {
     
 }
 
+const stopAllCars = () => {
+
+    // Handle click on cars
+    for ( let i = 0 ; i < carLanes.length ; i++ ) {
+        for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
+            carLanes[i].cars[j].isMoving = false;
+        }
+    }
+    
+}
+
 const checkCrash = (carLane, carObj, carIndex) => {
 
     const otherCars =  [];
@@ -190,3 +212,26 @@ const checkCrash = (carLane, carObj, carIndex) => {
     return crashed;
     
 }
+
+// const handleExplosion = (car) => {
+
+//     let x = car.x - 40;
+//     let y = car.y - 40;
+//     let i = 1;
+
+//     while (i < 7) {
+
+//         const explosionImg = new Image();
+//         explosionImg.src = `./imgs/explosion-${i}.png`;
+        
+//         setTimeout(() => {
+//             ctx.clearRect(0, 0, canvas.width, canvas.height);
+//             background.draw();
+//             updateCars();
+//             ctx.drawImage(explosionImg, car.top(), car.left(), 80, 80);
+//         }, 20)
+
+//         i++;
+//     }
+
+// }

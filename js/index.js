@@ -3,8 +3,24 @@ window.addEventListener('load', () => {
     // Start button event listener
     const startBtn = document.querySelector('button.start');
     startBtn.addEventListener('click', () => {
-        game = new Game();
-        game.start();
+        if ( typeof game === 'undefined' ) {
+            game = new Game();
+            game.start();
+        } else {
+            game.reset();
+        }
+    });
+
+    // Reset button event listener
+    const resetBtn = document.querySelector('button.reset');
+    resetBtn.addEventListener('click', () => {
+        game.reset();
+    });
+
+    // Change player button event listener
+    const changePlayerBtn = document.querySelector('button.change-player');
+    changePlayerBtn.addEventListener('click', () => {
+        game.changePlayer();
     });
 
     const canvas = document.querySelector('canvas');
