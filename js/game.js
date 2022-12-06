@@ -63,6 +63,7 @@ class Game {
     }
 
     reset() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         this.frames = 0;
         this.isOn = true;
         this.interval = null;

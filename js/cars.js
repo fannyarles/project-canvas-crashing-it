@@ -24,6 +24,58 @@ const carLaneRightToLeft = {
 
 const carLanes = [carLaneTopToBottom, carLaneBottomToTop, carLaneLeftToRight,carLaneRightToLeft];
 
+const vehicules = [
+    {
+        id: 1,
+        name: 'Taxi cab',
+        height: 56,
+        width: 34
+    },
+    {
+        id: 2,
+        name: 'Race car',
+        height: 55,
+        width: 34
+    },
+    {
+        id: 3,
+        name: 'Bus',
+        height: 59,
+        width: 34
+    },
+    {
+        id: 4,
+        name: 'Truck',
+        height: 59,
+        width: 34
+    },
+    {
+        id: 5,
+        name: 'Purple car',
+        height: 56,
+        width: 34
+    },
+    {
+        id: 6,
+        name: 'Orange car',
+        height: 56,
+        width: 34
+    },
+    {
+        id: 7,
+        name: 'Blue car',
+        height: 56,
+        width: 34
+    },
+    {
+        id: 8,
+        name: 'Grey car',
+        height: 56,
+        width: 34
+    }
+];
+
+
 const randomDelay = () => {
     return Math.floor(Math.random() * (110 - 60) + 60);
 }
@@ -35,8 +87,9 @@ class GameComponents {
     }
 
     update() {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height); 
+        const newCarImg = new Image();
+        newCarImg.src = this.imgUrl;
+        ctx.drawImage(newCarImg, this.x, this.y, this.width, this.height); 
     }
 
     top() { return this.y; }
@@ -60,12 +113,13 @@ class GameComponents {
 
 class Car extends GameComponents {
 
-    constructor(lane, height, width, color) {
+    constructor(lane, height, width, carFileName) {
         super();
         this.isMoving = true;
-        this.color = color;
+        this.imgUrl = `./imgs/${carFileName}.png`;
         
         // FOR TESTING
+        // this.lane = carLanes[0]
         this.lane = lane;
         this.height = height;
         this.width = width;
@@ -103,26 +157,44 @@ const updateCars = () => {
     }
 
     if (game.frames % 50 === 0) {
+
+        const randCar = vehicules[Math.floor(Math.random() * vehicules.length)];
         const randColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
+
         let randLaneNum = game.lastLane;
         while ( randLaneNum === game.lastLane ) { randLaneNum = Math.floor(Math.random() * 4) }
         game.lastLane = randLaneNum;
         const lane = carLanes[randLaneNum];
 
-        let height, width;
+        let height, width, carFileName;
 
-        if (randLaneNum === 0 || randLaneNum === 1) {
-            height = 45;
-            width = 30;
-        } else {
-            height = 30;
-            width = 45;
-        } 
+        switch(lane) {
+            case carLaneLeftToRight:
+                carFileName = `vehicule-LR-${randCar.id}`;
+                height = randCar.width;
+                width = randCar.height;
+                break;
+            case carLaneRightToLeft:
+                carFileName = `vehicule-RL-${randCar.id}`;
+                height = randCar.width;
+                width = randCar.height;
+                break;
+            case carLaneTopToBottom:
+                carFileName = `vehicule-TB-${randCar.id}`;
+                height = randCar.height;
+                width = randCar.width;
+                break;
+            case carLaneBottomToTop:
+                carFileName = `vehicule-BT-${randCar.id}`;
+                height = randCar.height;
+                width = randCar.width;
+                break;
+        }
 
         const delay = randomDelay();
 
         setTimeout(() => { 
-            const newCar = new Car(lane, height, width, randColor)
+            const newCar = new Car(lane, height, width, carFileName)
             lane.cars.push(newCar)
         }, delay );
         
