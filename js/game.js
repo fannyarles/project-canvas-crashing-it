@@ -12,7 +12,7 @@ const updateGame = () => {
     background.draw();
 
     // generate dinos
-    generateDinos();
+    // generateDinos();
 
     // update cars
     updateCars();
@@ -128,9 +128,10 @@ const checkGameOver = () => {
     if ( !game.isOn ) {
         game.stop();
         setTimeout(() => { 
-        game.displayScore(); 
-        game.saveScore();
-        game.updateLeaderboard(); }, 500);
+            game.displayScore(); 
+            game.saveScore();
+            game.updateLeaderboard();
+        }, 1500);
     } 
 }
 
