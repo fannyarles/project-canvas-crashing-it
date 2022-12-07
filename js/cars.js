@@ -111,9 +111,6 @@ class Car extends GameComponents {
         super();
         this.isMoving = true;
         this.imgUrl = `./imgs/${carFileName}.png`;
-        
-        // FOR TESTING
-        // this.lane = carLanes[0]
         this.lane = lane;
         this.height = height;
         this.width = width;
@@ -148,7 +145,10 @@ const updateCars = () => {
     // Generate new car on a random lane
     if (game.frames % 80 === 0) {
 
-        const randCar = vehicules[Math.floor(Math.random() * vehicules.length)];
+        let randCarNum = Math.floor(Math.random() * vehicules.length);
+        while ( randCarNum === game.lastCar ) { randCarNum = Math.floor(Math.random() * 4) }
+        game.lastCar = randCarNum;
+        const randCar = vehicules[randCarNum];
 
         let randLaneNum = game.lastLane;
         while ( randLaneNum === game.lastLane ) { randLaneNum = Math.floor(Math.random() * 4) }
@@ -205,7 +205,7 @@ const updateCars = () => {
                             car.x -= 3;
                             break;
                         case carLaneTopToBottom:
-                            car.y += 3;
+                            car.y += 4;
                             break;
                         case carLaneBottomToTop:
                             car.y -= 3;

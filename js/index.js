@@ -8,15 +8,26 @@ window.addEventListener('load', () => {
     const startBtn = document.querySelector('button.start');
     const playerNameInput = document.querySelector('input');
 
+    const audioElement = document.querySelector(".audio-start");
+
+    // audioElement.addEventListener('progress',updateLoadingStatus,false);
+    // audioElement.addEventListener('canplaythrough',audioLoaded,false);
+    //audioElement.load();
+
     startBtn.addEventListener('click', () => {
+        
         if (playerNameInput.value !== '' & playerNameInput.value !== ' ') {
+
             if ( typeof game === 'undefined' ) {
                 game = new Game();
                 game.start();
             } else {
                 game.reset();
             }
+
+            //audioElement.play();
         }
+
     });
 
     // Reset button event listener

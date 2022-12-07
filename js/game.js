@@ -49,6 +49,7 @@ class Game {
         this.isOn = true;
         this.interval;
         this.lastLane = 0;
+        this.lastCar = 0;
         this.score = 0;
         this.highScores = [];
         this.playerName = '';

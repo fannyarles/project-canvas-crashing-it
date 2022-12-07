@@ -45,7 +45,7 @@ const generateDinos = () => {
         }
     }
 
-    if (game.frames % 1500 === 0 && Math.random() >= .5) {
+    if (game.frames !== 0 && game.frames % 1500 === 0 && Math.random() >= .5) {
     
         let dinoFileName = `dino-TB`;
         let height = 198;

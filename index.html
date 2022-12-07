@@ -29,11 +29,9 @@
                 </p>
                 <div>
 
-                    <form>
-                        <input type="text" placeholder="Enter your name" required /><br />
+                    <input type="text" placeholder="Enter your name" required /><br />
 
-                        <button class="start">Start Game!</button>
-                    </form>
+                    <button class="start">Start Game!</button>
                 </div>
             </section>
 
@@ -61,6 +59,11 @@
         </aside>
 
     </div>
+
+    <audio id="audio" controls>
+        <source src="./audio/start.mp3" type="audio/mp3" class="audio-start">
+        Your browser does not support the audio element.
+    </audio>
 
     <script src="./js/index.js"></script>
     <script src="./js/game.js"></script>
