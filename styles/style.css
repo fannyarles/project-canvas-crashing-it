@@ -13,6 +13,10 @@ body {
     font-family: 'Nunito', sans-serif;
 }
 
+strong {
+    font-weight: 700;
+}
+
 h1 {
     font-size: 4rem;
     font-weight: 800;
@@ -21,14 +25,21 @@ h1 {
 
 h2 {
     text-align: center;
-    letter-spacing: 2px;
-    font-size: 1.2rem;
+    letter-spacing: 3px;
+    font-size: 1.1rem;
     text-transform: uppercase;
     font-weight: 700;
-    margin-bottom: 40px;
+    margin: 50px auto 20px auto;
+    background-color: #222;
+    color: white;
+    border-radius: 3px;
+    padding: 9px 12px 7px 12px;
+    border: 3px solid white;
+    /* box-shadow: 0px 2px 8px rgba(0, 0, 0, .2); */
 }
 
 ul {
+    margin-top: 50px;
 }
 
 li {
@@ -83,13 +94,19 @@ main {
     height: 100%;
 }
 
+#splash p {
+    max-width: 580px;
+    font-size: 1.2rem;
+    line-height: 1.5rem;
+}
+
 img.logo {
-    height: 200px;
+    height: 180px;
     width: auto;
-    margin-bottom: 40px;
 }
 
 #game-over {
+    display: none;
     padding: 50px;
     display: none;
     flex-direction: column;
@@ -103,26 +120,33 @@ img.logo {
 }
 
 #scores {
-    /* background-color: grey; */
+    /* background-color: #c0c0c0; */
     /* border-left: 4px dashed #333; */
-    padding: 50px;
+    padding-left: 50px;
+    padding-right: 50px;
     width: auto;
     min-width: 220px;
     border-radius: 6px;
     margin-left: 50px;
 }
 
-input.start, button.reset {
+button.start, button.reset {
     margin-top: 30px;
     padding: 20px 65px;
     border: 0px;
-    background-color: #00D3A1;
+    background-color: #F73C5C;
     color: white;
     letter-spacing: 1px;
     font-size: 1.3rem;
     text-transform: uppercase;
     font-weight: 800;
     border-radius: 4px;
+    transition: all .5s;
+}
+
+button.start:hover, button.reset:hover {
+    padding: 20px 75px;
+    background-color: #00D3A1;
 }
 
 button.change-player {
@@ -143,4 +167,5 @@ canvas {
     display: block;
     border-radius: 6px;
     margin: auto;
+    display: none;
 }

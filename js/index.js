@@ -1,13 +1,17 @@
 window.addEventListener('load', () => {
 
     // Start button event listener
-    const startBtn = document.querySelector('input.start');
+    const startBtn = document.querySelector('button.start');
+    const playerNameInput = document.querySelector('input');
+
     startBtn.addEventListener('click', () => {
-        if ( typeof game === 'undefined' ) {
-            game = new Game();
-            game.start();
-        } else {
-            game.reset();
+        if (playerNameInput.value !== '' & playerNameInput.value !== ' ') {
+            if ( typeof game === 'undefined' ) {
+                game = new Game();
+                game.start();
+            } else {
+                game.reset();
+            }
         }
     });
 

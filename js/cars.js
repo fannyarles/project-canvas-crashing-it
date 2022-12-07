@@ -63,13 +63,19 @@ const vehicules = [
     },
     {
         id: 7,
-        name: 'Blue car',
+        name: 'Cyan car',
         height: 56,
         width: 34
     },
     {
         id: 8,
         name: 'Grey car',
+        height: 56,
+        width: 34
+    },
+    {
+        id: 9,
+        name: 'Blue car',
         height: 56,
         width: 34
     }
@@ -130,10 +136,6 @@ class Car extends GameComponents {
 
 }
 
-class Dino extends GameComponents {
-
-}
-
 // Generate cars
 
 const updateCars = () => {
@@ -164,6 +166,15 @@ const updateCars = () => {
         while ( randLaneNum === game.lastLane ) { randLaneNum = Math.floor(Math.random() * 4) }
         game.lastLane = randLaneNum;
         const lane = carLanes[randLaneNum];
+
+        if (!lane.cars.length) { // random picked lan is empty
+
+            if ( Math.random() < .3 ) { // coin flip for dinosaur
+
+                generateDino(); 
+
+            } 
+        }
 
         let height, width, carFileName;
 

@@ -1,6 +1,6 @@
 # Traffic Jam!
 
-[Click here to see deployed game](http://github.com)
+[Click here to see deployed game](https://fannyarles.github.io/project-canvas-traffic-jam/)
 
 ## Description
 
@@ -37,7 +37,5 @@ _List of tasks in order of priority_
 
 ## Links
 
-- [Trello Link](https://trello.com)
-- [Slides Link](http://slides.com)
-- [Github repository Link](http://github.com)
-- [Deployment Link](http://github.com)
+- [Github repository Link](https://github.com/fannyarles/project-canvas-traffic-jam)
+- [Deployment Link](https://fannyarles.github.io/project-canvas-traffic-jam/)
