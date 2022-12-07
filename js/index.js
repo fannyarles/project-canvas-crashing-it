@@ -9,14 +9,14 @@ window.addEventListener('load', () => {
     const playerNameInput = document.querySelector('input');
 
     startBtn.addEventListener('click', () => {
-        game = new Game();
-        game.start();
-        // if (playerNameInput.value !== '' & playerNameInput.value !== ' ') {
-            // if ( typeof game === 'undefined' ) {
-            // } else {
-            //     game.reset();
-            // }
-        // }
+        if (playerNameInput.value !== '' & playerNameInput.value !== ' ') {
+            if ( typeof game === 'undefined' ) {
+                game = new Game();
+                game.start();
+            } else {
+                game.reset();
+            }
+        }
     });
 
     // Reset button event listener
