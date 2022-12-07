@@ -96,10 +96,10 @@ class GameComponents {
 
     isOffCanvas() {
         return ( 
-            this.x > canvas.width + 150 || 
-            this.x < -150 ||
-            this.y > canvas.height + 150 || 
-            this.y < -150
+            this.x > canvas.width + 60 || 
+            this.x < -60 ||
+            this.y > canvas.height + 60 || 
+            this.y < -60
         );
     }
 
@@ -107,14 +107,14 @@ class GameComponents {
 
 class Car extends GameComponents {
 
-    constructor(lane, height, width, carFileName, raceCar) {
+    constructor(lane, height, width, carFileName, carId) {
         super();
         this.isMoving = true;
         this.imgUrl = `./imgs/${carFileName}.png`;
         this.lane = lane;
         this.height = height;
         this.width = width;
-        this.raceCar = raceCar;
+        this.carId = carId;
 
         this.x = this.lane.laneStartPointX;
         this.y = this.lane.laneStartPointY;
@@ -136,15 +136,21 @@ const updateCars = () => {
     for ( let i = 0 ; i < carLanes.length ; i++ ) {
         for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
             if ( checkCarCrashes(carLanes[i], carLanes[i].cars[j], j) ) {
-                stopAllCars();
-                // handleExplosion(carLanes[i].cars[j]);
+
+                // stop honks
+                stopCarHonks();
+
+                // handle crash sound
+                audioCrash.currentTime = 6.5;
+                audioCrash.volume = .7;
+                audioCrash.play();
                 game.isOn = false;
             }
         }
     }
 
     // Generate new car on a random lane
-    if (game.frames % 80 === 0) {
+    if (game.frames > 180 && game.frames % 60 === 0) {
 
         let randCarNum = Math.floor(Math.random() * vehicules.length);
         while ( randCarNum === game.lastCar ) { randCarNum = Math.floor(Math.random() * 4) }
@@ -156,11 +162,7 @@ const updateCars = () => {
         game.lastLane = randLaneNum;
         const lane = carLanes[randLaneNum];
 
-        let height, width, carFileName, raceCar;
-
-        randCar.id === 2 ? raceCar = true : raceCar = false;
-
-        console.log(raceCar)
+        let height, width, carFileName;
         
         switch(lane) {
             case carLaneLeftToRight:
@@ -186,14 +188,14 @@ const updateCars = () => {
         }
 
         setTimeout(() => { 
-            const newCar = new Car(lane, height, width, carFileName, raceCar)
+            const newCar = new Car(lane, height, width, carFileName, randCar.id)
             lane.cars.push(newCar)
         }, randomDelay() );  
 
     }
 
     // Delete cars out of canvas
-    // Otherwise, make it move
+    // Otherwise, make it move and honk
     carLanes.forEach(lane => {
         lane.cars.forEach((car, i) => {
 
@@ -205,11 +207,22 @@ const updateCars = () => {
 
                     let speed = 3;
 
-                    if ( game.frames >= 1000 && car.raceCar && i === 0 ) { speed = 4.8; }
+                    if ( game.frames >= 1000 && car.carId === 2 && i === 0 ) { 
+                        
+                        speed = 5.2;
+
+                        if (!car.acc) {
+                            const acceleration = new Audio(audio.acceleration);
+                            acceleration.loop = false;
+                            acceleration.startDate = 4;
+                            acceleration.play();
+                            car.acc = acceleration;
+                        }
+                    }
 
                     switch(lane) {
                         case carLaneLeftToRight:
-                             car.x += speed;
+                            car.x += speed;
                             break;
                         case carLaneRightToLeft:
                             car.x -= speed;
@@ -221,7 +234,7 @@ const updateCars = () => {
                             car.y -= speed;
                             break;
                     }
-                }
+                } 
             }
             
             // console.log(lane.cars.length)
@@ -232,9 +245,10 @@ const updateCars = () => {
     game.frames++;
 }
 
+// handle stop & go on click
+// + honks
 const clickCar = (x, y) => {
 
-    // Handle click on cars
     for ( let i = 0 ; i < carLanes.length ; i++ ) {
         for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
             if ( !(
@@ -244,18 +258,38 @@ const clickCar = (x, y) => {
                 carLanes[i].cars[j].right() < x
             ) ) {
                 carLanes[i].cars[j].isMoving = !carLanes[i].cars[j].isMoving;
+
+                if (!carLanes[i].cars[j].isMoving) {
+
+                    const audioCarHonk = audio.honks[carLanes[i].cars[j].carId - 1];
+                    const audioHonk = new Audio(audioCarHonk);
+                    carLanes[i].cars[j].honk = audioHonk;
+                    audioHonk.volume = 0.3;
+                    audioHonk.loop = true;
+                    audioHonk.play();
+
+                } else {
+                
+                    const honkToStop = carLanes[i].cars[j].honk;
+                    honkToStop.pause();
+                    delete carLanes[i].cars[j].honk;
+                    
+                }
+
             }
         }
     }
     
 }
 
-const stopAllCars = () => {
+const stopCarHonks = () => {
 
     // Handle click on cars
     for ( let i = 0 ; i < carLanes.length ; i++ ) {
         for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
-            carLanes[i].cars[j].isMoving = false;
+            if (carLanes[i].cars[j].honk) {
+                carLanes[i].cars[j].honk.pause();
+            }
         }
     }
     
@@ -277,26 +311,3 @@ const checkCarCrashes = (carLane, carObj, carIndex) => {
     return crashed;
     
 }
-
-// const handleExplosion = (car) => {
-
-//     let x = car.x - 40;
-//     let y = car.y - 40;
-//     let i = 1;
-
-//     while (i < 7) {
-
-//         const explosionImg = new Image();
-//         explosionImg.src = `./imgs/explosion-${i}.png`;
-        
-//         setTimeout(() => {
-//             ctx.clearRect(0, 0, canvas.width, canvas.height);
-//             background.draw();
-//             updateCars();
-//             ctx.drawImage(explosionImg, car.top(), car.left(), 80, 80);
-//         }, 20)
-
-//         i++;
-//     }
-
-// }

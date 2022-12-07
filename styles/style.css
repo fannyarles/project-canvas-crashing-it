@@ -5,7 +5,7 @@
 }
 
 html {
-    background-color: #d1d1d1;
+    background-color: #c4c4c4;
 }
 
 body {
@@ -26,10 +26,10 @@ h1 {
 h2 {
     text-align: center;
     letter-spacing: 3px;
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-transform: uppercase;
     font-weight: 700;
-    margin: 50px auto 20px auto;
+    margin: 30px auto 15px auto;
     background-color: #222;
     color: white;
     border-radius: 3px;
@@ -55,12 +55,12 @@ li.none {
 }
 
 input[type=text] {
-    margin-top: 50px;
-    padding: 20px 20px;
+    margin-top: 30px;
+    padding: 10px;
     border: 0px;
     background-color: white;
     letter-spacing: 1px;
-    font-size: 1.3rem;
+    font-size: 1rem;
     border-radius: 4px;
     text-align: center;
 }
@@ -95,13 +95,14 @@ main {
 }
 
 #splash p {
-    max-width: 580px;
+    font-weight: 700;
+    max-width: 450px;
     font-size: 1.2rem;
     line-height: 1.5rem;
 }
 
 img.logo {
-    height: 180px;
+    height: 170px;
     width: auto;
 }
 
@@ -174,4 +175,9 @@ canvas {
     border-radius: 6px;
     margin: auto;
     display: none;
+    border: 4px solid white;
+}
+
+#audio {
+    visibility: hidden;
 }

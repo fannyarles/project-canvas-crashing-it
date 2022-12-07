@@ -6,9 +6,9 @@ class Dino extends GameComponents {
         super();
         this.isMoving = true;
         this.imgFileName = imgFileName;
-        this.imgUrl = `./imgs/${imgFileName}-1a.png`;
-        this.imgUrl1 = `./imgs/${imgFileName}-1a.png`;
-        this.imgUrl2 = `./imgs/${imgFileName}-1b.png`;
+        this.imgUrl = `./imgs/${imgFileName}-2a.png`;
+        this.imgUrl1 = `./imgs/${imgFileName}-2a.png`;
+        this.imgUrl2 = `./imgs/${imgFileName}-2b.png`;
         
         this.height = height;
         this.width = width;
@@ -18,9 +18,9 @@ class Dino extends GameComponents {
     }
 
     update() {
-        const newDinoImg = new Image(); 
+        const newDinoImg = new Image();
 
-        if ( game.frames % 15 === 0) {
+        if ( game.frames % 10 === 0) {
             if ( this.imgUrl === this.imgUrl1 ) {
                 this.imgUrl = this.imgUrl2;
             } else if ( this.imgUrl === this.imgUrl2 ) {
@@ -31,6 +31,13 @@ class Dino extends GameComponents {
         newDinoImg.src = this.imgUrl;
 
         ctx.drawImage(newDinoImg, this.x, this.y, this.width, this.height); 
+
+        if ( !this.roar ) {
+            this.roar = new Audio(audio.dinosaur);
+            this.roar.loop = false;
+            this.roar.play();
+        }
+
     }
 
 }
@@ -45,10 +52,10 @@ const generateDinos = () => {
         }
     }
 
-    if (game.frames !== 0 && game.frames % 1500 === 0 && Math.random() >= .5) {
+    if (game.frames !== 0 && game.frames % 1500 === 0 && Math.random() >= .8) {
     
         let dinoFileName = `dino-TB`;
-        let height = 198;
+        let height = 159;
         let width = 40;
 
         setTimeout(() => { 

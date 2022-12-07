@@ -21,7 +21,8 @@ Crashing It puts the player in charge of traffic control at a crossroad. They ha
 
 - add sound effects
 - add random elements that cars can collide with
-- add levels
+- add race cars that accelerate when the lane is empty
+- give the possibility to switch payer
 
 ## Data structure
 

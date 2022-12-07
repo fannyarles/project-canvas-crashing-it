@@ -8,12 +8,6 @@ window.addEventListener('load', () => {
     const startBtn = document.querySelector('button.start');
     const playerNameInput = document.querySelector('input');
 
-    const audioElement = document.querySelector(".audio-start");
-
-    // audioElement.addEventListener('progress',updateLoadingStatus,false);
-    // audioElement.addEventListener('canplaythrough',audioLoaded,false);
-    //audioElement.load();
-
     startBtn.addEventListener('click', () => {
         
         if (playerNameInput.value !== '' & playerNameInput.value !== ' ') {
@@ -24,8 +18,6 @@ window.addEventListener('load', () => {
             } else {
                 game.reset();
             }
-
-            //audioElement.play();
         }
 
     });
@@ -46,7 +38,6 @@ window.addEventListener('load', () => {
     canvas.addEventListener('click', (event) => {
         const x = event.offsetX;
         const y = event.offsetY;
-        console.log(x, y)
         clickCar(x, y);
     })
 

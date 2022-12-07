@@ -9,7 +9,7 @@ const updateGame = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // add background
-    background.draw();
+    drawBackground();
 
     // generate dinos
     generateDinos();
@@ -18,12 +18,15 @@ const updateGame = () => {
     updateCars();
 
     // update score
-    updateScore();
+    game.updateScore();
 
     // check game over
-    checkGameOver();
+    game.checkGameOver();
 
 }
+
+
+// SWITCH SREENS METHODS
 
 const displayGame = () => {
     splashScreen.style.display = 'none';
@@ -43,6 +46,40 @@ const displayGameOverScreen = () => {
     canvas.style.display = 'none';
 }
 
+
+// AUDIO & IMAGES ASSETS
+
+const audio = {
+    start: './audio/start.mp3',
+    theme: './audio/theme.mp3',
+    honks: [
+        './audio/horn-1.mp3', 
+        './audio/horn-2.mp3',
+        './audio/horn-3.mp3', 
+        './audio/horn-4.mp3', 
+        './audio/horn-5.mp3', 
+        './audio/horn-6.mp3', 
+        './audio/horn-7.mp3', 
+        './audio/horn-8.mp3', 
+        './audio/horn-9.mp3'],
+    crash: './audio/crash.mp3',
+    acceleration: './audio/acceleration.mp3',
+    dinosaur: './audio/dinosaur.mp3'
+}
+
+const audioStart = new Audio(audio.start);
+const audioTheme = new Audio(audio.theme);
+const audioCrash = new Audio(audio.crash);
+const audioAcceleration = new Audio(audio.acceleration);
+
+const images = {
+    backgrounds: ['./imgs/background-1.png', './imgs/background-2.png', './imgs/background-3.png'],
+    explosion: './imgs/explosion.png'
+}
+
+
+// GAME CLASS
+
 class Game {
     constructor() {
         this.frames = 0;
@@ -56,14 +93,31 @@ class Game {
     }
 
     start() {
+
+        // handle player's name
         const playerNameInput = document.querySelector('input').value;
         this.playerName = playerNameInput;
-        displayGame();  
+
+        // handle start sound
+        audioStart.startDate = .6;
+        audioStart.play();
+
+        // handle theme sound
+        audioTheme.volume = .4;
+        audioTheme.loop = true;
+        setTimeout(() => audioTheme.play(), 5000);
+
+        // start game
+        displayGame();
         this.interval = setInterval(updateGame, 20);
     }
 
-    stop() {
+    stop() {        
         clearInterval(this.interval);
+
+        // handle sounds stop
+        audioStart.pause();
+        audioTheme.pause();
     }
 
     reset() {
@@ -96,6 +150,27 @@ class Game {
 
     }
 
+    updateScore() {
+        ctx.fillStyle = 'black';
+        ctx.font = 'bold 40px Nunito';
+        ctx.fillText(this.score, canvas.width - 70, 60)
+        let text;
+        this.score === 1 ? text = 'car' : text = 'cars';
+        ctx.font = 'normal 14px Nunito';
+        ctx.fillText(`${text} survived`, canvas.width - 100, 80)
+    }
+
+    checkGameOver() {
+        if ( !this.isOn ) {
+            this.stop();
+            setTimeout(() => { 
+                this.displayScore(); 
+                this.saveScore();
+                this.updateLeaderboard();
+            }, 1500);
+        } 
+    }
+
     saveScore() {
     
         this.highScores.push([this.playerName, this.score]);
@@ -115,25 +190,22 @@ class Game {
     }
 }
 
-const bgImg = new Image();
-const backgrounds = ['./imgs/background-1.png', './imgs/background-2.png', './imgs/background-3.png']
-bgImg.src = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+// BACKGROUND
 
-const background = {
-    draw: () => {
-        bgImg.onload = ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-    }
+const bgImg = new Image();
+bgImg.src = images.backgrounds[Math.floor(Math.random() * images.backgrounds.length)];
+
+const drawBackground = () => {
+    bgImg.onload = ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
 }
 
-const checkGameOver = () => {
-    if ( !game.isOn ) {
-        game.stop();
-        setTimeout(() => { 
-            game.displayScore(); 
-            game.saveScore();
-            game.updateLeaderboard();
-        }, 1500);
-    } 
+const explosion = (car) => {
+
+    console.log('explosion')
+    let explosionImg = new Image();
+    explosionImg.src = images.explosion;
+    ctx.drawImage(explosionImg, 200, 200, 50, 50);
+
 }
 
 const clearGame = () => {
