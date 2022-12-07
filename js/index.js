@@ -27,6 +27,7 @@ window.addEventListener('load', () => {
     canvas.addEventListener('click', (event) => {
         const x = event.offsetX;
         const y = event.offsetY;
+        console.log(x, y)
         clickCar(x, y);
     })
 

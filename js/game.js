@@ -112,7 +112,8 @@ class Game {
 }
 
 const bgImg = new Image();
-bgImg.src = './imgs/background.jpg';
+const backgrounds = ['./imgs/background-1.png', './imgs/background-2.png', './imgs/background-3.png']
+bgImg.src = backgrounds[Math.floor(Math.random() * backgrounds.length)];
 
 const background = {
     draw: () => {
@@ -123,8 +124,9 @@ const background = {
 const checkGameOver = () => {
     if ( !game.isOn ) {
         game.stop();
+        setTimeout(() => { 
         game.displayScore(); 
         game.saveScore();
-        game.updateLeaderboard();
+        game.updateLeaderboard(); }, 500);
     } 
 }

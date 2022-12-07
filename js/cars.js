@@ -1,11 +1,11 @@
 const carLaneTopToBottom = {
-    laneStartPointX: 415,
+    laneStartPointX: 510,
     laneStartPointY: -50,
     cars: []
 }
 
 const carLaneBottomToTop = {
-    laneStartPointX: 355,
+    laneStartPointX: 455,
     laneStartPointY: canvas.height + 50,
     cars: []
 }
@@ -18,7 +18,7 @@ const carLaneLeftToRight = {
 
 const carLaneRightToLeft = {
     laneStartPointX: canvas.width + 50,
-    laneStartPointY: 415,
+    laneStartPointY: 410,
     cars: []
 }
 
@@ -77,7 +77,7 @@ const vehicules = [
 
 
 const randomDelay = () => {
-    return Math.floor(Math.random() * (110 - 60) + 60);
+    return Math.floor(Math.random() * (130 - 60) + 60);
 }
 
 
@@ -159,7 +159,6 @@ const updateCars = () => {
     if (game.frames % 50 === 0) {
 
         const randCar = vehicules[Math.floor(Math.random() * vehicules.length)];
-        const randColor = `#${Math.floor(Math.random()*16777215).toString(16)}`;
 
         let randLaneNum = game.lastLane;
         while ( randLaneNum === game.lastLane ) { randLaneNum = Math.floor(Math.random() * 4) }
@@ -271,11 +270,8 @@ const checkCrash = (carLane, carObj, carIndex) => {
 
     carLanes.forEach(lane => {
         lane.cars.forEach((car, i) => {
-
             if ( lane === carLane && i === carIndex ) { return; }
-
             otherCars.push(car);
-
         });
     });
     

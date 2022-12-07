@@ -4,6 +4,10 @@
     font-family: 'Nunito', sans-serif;
 }
 
+html {
+    background-color: #d1d1d1;
+}
+
 body {
     font-size: 22px;
     font-family: 'Nunito', sans-serif;
@@ -53,7 +57,7 @@ input[type=text] {
 #content {
     height: calc(100vh - 200px);
     width: 80%;
-    margin: 50px auto;
+    margin: 25px auto;
     display: flex;
     flex-direction: row;
 }
@@ -70,10 +74,19 @@ main {
     align-items: center;
     /* justify-content: center; */
     margin: auto;
-    padding: 50px;
+    padding: 30px;
     text-align: center;
-    background-color: antiquewhite;
+    /* border: 4px dashed white; */
+    /* background-color: antiquewhite; */
+    /* border: 6px solid #191919; */
+    border-radius: 10px;
     height: 100%;
+}
+
+img.logo {
+    height: 200px;
+    width: auto;
+    margin-bottom: 40px;
 }
 
 #game-over {
@@ -84,24 +97,26 @@ main {
     justify-content: center;
     margin: auto;
     text-align: center;
-    background-color: antiquewhite;
+    /* border: 4px dashed white; */
+    /* background-color: antiquewhite; */
     height: 100%;
 }
 
 #scores {
-    background-color: antiquewhite;
+    /* background-color: grey; */
+    /* border-left: 4px dashed #333; */
     padding: 50px;
     width: auto;
     min-width: 220px;
     border-radius: 6px;
-    margin-right: 50px;
+    margin-left: 50px;
 }
 
 input.start, button.reset {
     margin-top: 30px;
     padding: 20px 65px;
     border: 0px;
-    background-color: coral;
+    background-color: #00D3A1;
     color: white;
     letter-spacing: 1px;
     font-size: 1.3rem;
@@ -126,7 +141,6 @@ button.change-player {
 canvas {
     position: absolute;
     display: block;
-    width: 800px;
     border-radius: 6px;
     margin: auto;
 }
