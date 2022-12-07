@@ -107,13 +107,14 @@ class GameComponents {
 
 class Car extends GameComponents {
 
-    constructor(lane, height, width, carFileName) {
+    constructor(lane, height, width, carFileName, raceCar) {
         super();
         this.isMoving = true;
         this.imgUrl = `./imgs/${carFileName}.png`;
         this.lane = lane;
         this.height = height;
         this.width = width;
+        this.raceCar = raceCar;
 
         this.x = this.lane.laneStartPointX;
         this.y = this.lane.laneStartPointY;
@@ -155,7 +156,11 @@ const updateCars = () => {
         game.lastLane = randLaneNum;
         const lane = carLanes[randLaneNum];
 
-        let height, width, carFileName;
+        let height, width, carFileName, raceCar;
+
+        randCar.id === 2 ? raceCar = true : raceCar = false;
+
+        console.log(raceCar)
         
         switch(lane) {
             case carLaneLeftToRight:
@@ -181,7 +186,7 @@ const updateCars = () => {
         }
 
         setTimeout(() => { 
-            const newCar = new Car(lane, height, width, carFileName)
+            const newCar = new Car(lane, height, width, carFileName, raceCar)
             lane.cars.push(newCar)
         }, randomDelay() );  
 
@@ -198,20 +203,22 @@ const updateCars = () => {
             } else {
                 if ( car.isMoving ) {
 
-                    const normalSpeed = 3;
+                    let speed = 3;
+
+                    if ( game.frames >= 1000 && car.raceCar && i === 0 ) { speed = 4.8; }
 
                     switch(lane) {
                         case carLaneLeftToRight:
-                             car.x += 3;
+                             car.x += speed;
                             break;
                         case carLaneRightToLeft:
-                            car.x -= 3;
+                            car.x -= speed;
                             break;
                         case carLaneTopToBottom:
-                            car.y += 4;
+                            car.y += speed;
                             break;
                         case carLaneBottomToTop:
-                            car.y -= 3;
+                            car.y -= speed;
                             break;
                     }
                 }
