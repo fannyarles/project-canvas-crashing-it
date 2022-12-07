@@ -197,6 +197,9 @@ const updateCars = () => {
                 lane.cars.splice(i, 1);
             } else {
                 if ( car.isMoving ) {
+
+                    const normalSpeed = 3;
+
                     switch(lane) {
                         case carLaneLeftToRight:
                              car.x += 3;
