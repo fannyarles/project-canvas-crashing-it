@@ -12,7 +12,7 @@ const updateGame = () => {
     background.draw();
 
     // generate dinos
-    // generateDinos();
+    generateDinos();
 
     // update cars
     updateCars();
