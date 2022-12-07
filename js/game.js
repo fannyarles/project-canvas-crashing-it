@@ -10,7 +10,10 @@ const updateGame = () => {
 
     // add background
     background.draw();
-    
+
+    // generate dinos
+    generateDinos();
+
     // update cars
     updateCars();
 
@@ -63,12 +66,12 @@ class Game {
     }
 
     reset() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
         this.frames = 0;
         this.isOn = true;
         this.interval = null;
         this.lastLane = 0;
         this.score = 0;
+        clearGame();
         this.start();
     }
 
@@ -129,4 +132,22 @@ const checkGameOver = () => {
         game.saveScore();
         game.updateLeaderboard(); }, 500);
     } 
+}
+
+const clearGame = () => {
+
+    // Remove all cars if new game
+    if ( game.score === 0 && game.frames === 0 ) {
+        for ( let i = 0 ; i < carLanes.length ; i++ ) {
+            for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
+                carLanes[i].cars = [];                
+            }
+        }
+    }
+
+    // Remove all dinos if new game
+    if ( game.score === 0 && game.frames === 0 ) { dinos = []; }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
 }

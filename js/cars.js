@@ -81,21 +81,9 @@ const vehicules = [
     }
 ];
 
-
-const randomDelay = () => {
-    return Math.floor(Math.random() * (130 - 60) + 60);
-}
-
-
 class GameComponents {
 
     constructor() {
-    }
-
-    update() {
-        const newCarImg = new Image();
-        newCarImg.src = this.imgUrl;
-        ctx.drawImage(newCarImg, this.x, this.y, this.width, this.height); 
     }
 
     top() { return this.y; }
@@ -134,23 +122,22 @@ class Car extends GameComponents {
         this.y = this.lane.laneStartPointY;
     }
 
+    update() {
+        const newCarImg = new Image();
+        newCarImg.src = this.imgUrl;
+        ctx.drawImage(newCarImg, this.x, this.y, this.width, this.height); 
+    }
+
 }
 
 // Generate cars
 
 const updateCars = () => {
 
-    if ( game.score === 0 && game.frames === 0 ) {
-        for ( let i = 0 ; i < carLanes.length ; i++ ) {
-            for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
-                carLanes[i].cars = [];                
-            }
-        }
-    }
-
+    // Check for crashes
     for ( let i = 0 ; i < carLanes.length ; i++ ) {
         for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
-            if ( checkCrash(carLanes[i], carLanes[i].cars[j], j) ) {
+            if ( checkCarCrashes(carLanes[i], carLanes[i].cars[j], j) ) {
                 stopAllCars();
                 // handleExplosion(carLanes[i].cars[j]);
                 game.isOn = false;
@@ -158,7 +145,8 @@ const updateCars = () => {
         }
     }
 
-    if (game.frames % 50 === 0) {
+    // Generate new car on a random lane
+    if (game.frames % 80 === 0) {
 
         const randCar = vehicules[Math.floor(Math.random() * vehicules.length)];
 
@@ -167,17 +155,8 @@ const updateCars = () => {
         game.lastLane = randLaneNum;
         const lane = carLanes[randLaneNum];
 
-        if (!lane.cars.length) { // random picked lan is empty
-
-            if ( Math.random() < .3 ) { // coin flip for dinosaur
-
-                generateDino(); 
-
-            } 
-        }
-
         let height, width, carFileName;
-
+        
         switch(lane) {
             case carLaneLeftToRight:
                 carFileName = `vehicule-LR-${randCar.id}`;
@@ -201,18 +180,15 @@ const updateCars = () => {
                 break;
         }
 
-        const delay = randomDelay();
-
         setTimeout(() => { 
             const newCar = new Car(lane, height, width, carFileName)
             lane.cars.push(newCar)
-        }, delay );
-        
+        }, randomDelay() );  
+
     }
 
     // Delete cars out of canvas
     // Otherwise, make it move
-
     carLanes.forEach(lane => {
         lane.cars.forEach((car, i) => {
 
@@ -223,16 +199,16 @@ const updateCars = () => {
                 if ( car.isMoving ) {
                     switch(lane) {
                         case carLaneLeftToRight:
-                             car.x += 2.5;
+                             car.x += 3;
                             break;
                         case carLaneRightToLeft:
-                            car.x -= 2.5;
+                            car.x -= 3;
                             break;
                         case carLaneTopToBottom:
-                            car.y += 2.5;
+                            car.y += 3;
                             break;
                         case carLaneBottomToTop:
-                            car.y -= 2.5;
+                            car.y -= 3;
                             break;
                     }
                 }
@@ -275,7 +251,7 @@ const stopAllCars = () => {
     
 }
 
-const checkCrash = (carLane, carObj, carIndex) => {
+const checkCarCrashes = (carLane, carObj, carIndex) => {
 
     const otherCars =  [];
 

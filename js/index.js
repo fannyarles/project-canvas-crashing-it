@@ -1,3 +1,7 @@
+const randomDelay = () => {
+    return Math.floor(Math.random() * (120 - 50) + 50);
+}
+
 window.addEventListener('load', () => {
 
     // Start button event listener
