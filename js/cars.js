@@ -185,6 +185,7 @@ const updateCars = () => {
 
                     if ( car.carId === 2 && i === 0 && countDinos() === 0 ) { speed = 5.2;
                         
+
                         if (speed === 5.2 && !car.acc) {
                             handleSounds('acceleration');
                             car.acc = true;

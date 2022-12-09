@@ -265,7 +265,7 @@ const handleSounds = (situation) => {
             break;
         case 'acceleration':
             audioAcceleration.volume = .3;
-            audioAcceleration.currentTime = 3;
+            audioAcceleration.currentTime = 3.8;
             audioAcceleration.loop = false;
             audioAcceleration.play();
             break;

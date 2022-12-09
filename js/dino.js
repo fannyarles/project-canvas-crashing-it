@@ -3,8 +3,7 @@ let dinosLane = [];
 const dinos = [
     {
         id: 1,
-        name: 'T-Rex',
-        roar: audio.dino
+        name: 'T-Rex'
     },
     {
         id: 2,
