@@ -29,8 +29,25 @@ class Dino extends GameComponents {
 
         if ( lane ) {
             this.lane = lane;
-            this.x = this.lane.laneStartPointX;
-            this.y = this.lane.laneStartPointY;
+        
+            switch(lane) {
+                case carLaneLeftToRight:
+                    this.x = this.lane.laneStartPointX - 100;
+                    this.y = this.lane.laneStartPointY;
+                    break;
+                case carLaneRightToLeft:
+                    this.x = this.lane.laneStartPointX + 100;
+                    this.y = this.lane.laneStartPointY;
+                    break;
+                case carLaneTopToBottom:
+                    this.x = this.lane.laneStartPointX;
+                    this.y = this.lane.laneStartPointY - 100;
+                    break;
+                case carLaneBottomToTop:
+                    this.x = this.lane.laneStartPointX;
+                    this.y = this.lane.laneStartPointY + 100;
+                    break;
+            }
         } else {
             this.x = 390;
             this.y = -50;
