@@ -81,30 +81,6 @@ const vehicules = [
     }
 ];
 
-class GameComponents {
-
-    constructor() {
-    }
-
-    top() { return this.y; }
-
-    bottom() { return this.y + this.height; }
-
-    left() { return this.x; }
-
-    right() { return this.x + this.width; }
-
-    isOffCanvas() {
-        return ( 
-            this.x > canvas.width + this.height + 20 || 
-            this.x < - ( this.height + 20 ) ||
-            this.y > canvas.height + this.height + 20 || 
-            this.y < - ( this.height + 20 )
-        );
-    }
-
-}
-
 class Car extends GameComponents {
 
     constructor(lane, height, width, carFileName, carId) {
@@ -136,8 +112,8 @@ const updateCars = () => {
     for ( let i = 0 ; i < carLanes.length ; i++ ) {
         for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
             if ( checkCarCrashes(carLanes[i], carLanes[i].cars[j], j) ) {
-                stopCarHonks();
-                crashSound();
+                handleSounds('crash');
+                game.isOn = false;
             }
         }
     }
@@ -207,15 +183,11 @@ const updateCars = () => {
 
                     let speed = 3;
 
-                    if ( game.frames >= 1000 && car.carId === 2 && i === 0 && countDinos() === 0 ) { speed = 5.2;
+                    if ( car.carId === 2 && i === 0 && countDinos() === 0 ) { speed = 5.2;
                         
-
                         if (speed === 5.2 && !car.acc) {
-                            const acceleration = new Audio(audio.acceleration);
-                            acceleration.loop = false;
-                            acceleration.startDate = 1;
-                            acceleration.play();
-                            car.acc = acceleration;
+                            handleSounds('acceleration');
+                            car.acc = true;
                         }
 
                     }

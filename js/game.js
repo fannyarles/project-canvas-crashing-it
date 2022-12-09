@@ -69,8 +69,8 @@ const audio = {
 
 const audioStart = new Audio(audio.start);
 const audioTheme = new Audio(audio.theme);
-const audioCrash = new Audio(audio.crash);
 const audioAcceleration = new Audio(audio.acceleration);
+const audioCrash = new Audio(audio.crash);
 
 const images = {
     backgrounds: ['./imgs/background-1.png', './imgs/background-2.png', './imgs/background-3.png'],
@@ -99,13 +99,10 @@ class Game {
         this.playerName = playerNameInput;
 
         // handle start sound
-        audioStart.startDate = .6;
-        audioStart.play();
+        handleSounds('start');
 
         // handle theme sound
-        audioTheme.volume = .3;
-        audioTheme.loop = true;
-        setTimeout(() => audioTheme.play(), 5000);
+        handleSounds('theme');
 
         // start game
         displayGame();
@@ -192,6 +189,30 @@ class Game {
     }
 }
 
+class GameComponents {
+
+    constructor() {
+    }
+
+    top() { return this.y; }
+
+    bottom() { return this.y + this.height; }
+
+    left() { return this.x; }
+
+    right() { return this.x + this.width; }
+
+    isOffCanvas() {
+        return ( 
+            this.x > canvas.width + this.height + 20 || 
+            this.x < - ( this.height + 20 ) ||
+            this.y > canvas.height + this.height + 20 || 
+            this.y < - ( this.height + 20 )
+        );
+    }
+
+}
+
 // BACKGROUND
 
 const bgImg = new Image();
@@ -199,15 +220,6 @@ bgImg.src = images.backgrounds[Math.floor(Math.random() * images.backgrounds.len
 
 const drawBackground = () => {
     bgImg.onload = ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-}
-
-const explosion = (car) => {
-
-    console.log('explosion')
-    let explosionImg = new Image();
-    explosionImg.src = images.explosion;
-    ctx.drawImage(explosionImg, 200, 200, 50, 50);
-
 }
 
 const clearGame = () => {
@@ -229,11 +241,35 @@ const clearGame = () => {
 }
 
 // CRASH SOUND 
-const crashSound = () => {
-    audioCrash.currentTime = 6.5;
-    audioCrash.volume = .7;
-    audioCrash.play();
-    game.isOn = false;
+const handleSounds = (situation) => {
+        
+    switch(situation) {
+        case 'crash':
+            // stop all sounds
+            stopCarHonks();
+            stopAllDinos();
+        
+            // handle crash sound
+            audioCrash.currentTime = 6.5;
+            audioCrash.volume = .7;
+            audioCrash.play();
+            break;
+        case 'start':
+            audioStart.startDate = .6;
+            audioStart.play();
+            break;
+        case 'theme':
+            audioTheme.volume = .3;
+            audioTheme.loop = true;
+            setTimeout(() => audioTheme.play(), 5000);
+            break;
+        case 'acceleration':
+            audioAcceleration.volume = .3;
+            audioAcceleration.currentTime = 3;
+            audioAcceleration.loop = false;
+            audioAcceleration.play();
+            break;
+    }
 }
 
 // HELP FUNCTIONS

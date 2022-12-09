@@ -71,9 +71,7 @@ const generateDino = (lane) => {
     // Check for dino crashes
     for ( let i = 0 ; i < dinosLane.length ; i++ ) {
         if ( checkDinoCrashes(dinosLane[i]) ) {
-            stopCarHonks();
-            crashSound();
-            stopAllDinos();
+            handleSounds('crash');
             game.isOn = false;
         }
     }
@@ -135,9 +133,7 @@ const countDinos = () => {
         });
     });
 
-    dinosLane.forEach(dino => {
-        counter++;
-    });
+    dinosLane.forEach(dino => {  counter++; });
 
     return counter;
 
