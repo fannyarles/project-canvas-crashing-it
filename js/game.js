@@ -12,7 +12,7 @@ const updateGame = () => {
     drawBackground();
 
     // generate dinos
-    generateDinos();
+    generateDino();
 
     // update cars
     updateCars();
@@ -64,7 +64,7 @@ const audio = {
         './audio/horn-9.mp3'],
     crash: './audio/crash.mp3',
     acceleration: './audio/acceleration.mp3',
-    dinosaur: './audio/dinosaur.mp3'
+    dinos: ['./audio/dino-1.mp3', './audio/dino-2.mp3']
 }
 
 const audioStart = new Audio(audio.start);
@@ -103,7 +103,7 @@ class Game {
         audioStart.play();
 
         // handle theme sound
-        audioTheme.volume = .4;
+        audioTheme.volume = .3;
         audioTheme.loop = true;
         setTimeout(() => audioTheme.play(), 5000);
 
@@ -136,7 +136,7 @@ class Game {
         let gameOverText = '';
 
         if ( this.score < 15 ) {
-            gameOverText = `You suck, ${this.playerName}!`;
+            gameOverText = `That's bad, ${this.playerName}!`;
         } else if ( this.score < 35 ) {
             gameOverText = `Pretty good, ${this.playerName}!`;
         } else {
@@ -180,8 +180,10 @@ class Game {
     updateLeaderboard() {
         const leaderboardUl = highScoresSection.querySelector('ul');
         leaderboardUl.innerHTML = '';
-        [...this.highScores].sort((a, b) => b[1] - a[1]).map(score => {
-            leaderboardUl.innerHTML += `<li><span class="name">${score[0]}</span><span class="score">${score[1]}</li>`;
+        [...this.highScores].sort((a, b) => b[1] - a[1]).map((score, index) => {
+            let medal = '';
+            if ( index < 3 ) {  medal = `<img src='./imgs/medal-${index + 1}.png' />`; }
+            leaderboardUl.innerHTML += `<li><span class="name">${medal} ${score[0]}</span><span class="score">${score[1]}</li>`;
         });
     }
 
@@ -220,8 +222,33 @@ const clearGame = () => {
     }
 
     // Remove all dinos if new game
-    if ( game.score === 0 && game.frames === 0 ) { dinos = []; }
+    if ( game.score === 0 && game.frames === 0 ) { dinosLane = []; }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+}
+
+// CRASH SOUND 
+const crashSound = () => {
+    audioCrash.currentTime = 6.5;
+    audioCrash.volume = .7;
+    audioCrash.play();
+    game.isOn = false;
+}
+
+// HELP FUNCTIONS
+
+const checkLane = (lane) => {
+        
+    switch(lane) {
+        case carLaneLeftToRight:
+            return `LR`;
+        case carLaneRightToLeft:
+            return `RL`;
+        case carLaneTopToBottom:
+            return `TB`;
+        case carLaneBottomToTop:
+            return `BT`;
+    }
+    
 }

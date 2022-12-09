@@ -1,20 +1,42 @@
-let dinos = [];
+let dinosLane = [];
+
+const dinos = [
+    {
+        id: 1,
+        name: 'T-Rex',
+        roar: audio.dino
+    },
+    {
+        id: 2,
+        name: 'Nessy'
+    }
+
+]
 
 class Dino extends GameComponents {
 
-    constructor(height, width, imgFileName) {
+    constructor(height, width, imgFileName, lane = 0) {
         super();
+        this.type = 'dino';
         this.isMoving = true;
         this.imgFileName = imgFileName;
-        this.imgUrl = `./imgs/${imgFileName}-2a.png`;
-        this.imgUrl1 = `./imgs/${imgFileName}-2a.png`;
-        this.imgUrl2 = `./imgs/${imgFileName}-2b.png`;
+        this.dinoID = dinos[Math.floor(Math.random() * dinos.length)].id;
+        this.imgUrl = `./imgs/${imgFileName}-${this.dinoID}a.png`;
+        this.imgUrl1 = `./imgs/${imgFileName}-${this.dinoID}a.png`;
+        this.imgUrl2 = `./imgs/${imgFileName}-${this.dinoID}b.png`;
         
         this.height = height;
         this.width = width;
 
-        this.x = 390;
-        this.y = -50;
+        if ( lane ) {
+            this.lane = lane;
+            this.x = this.lane.laneStartPointX;
+            this.y = this.lane.laneStartPointY;
+        } else {
+            this.x = 390;
+            this.y = -50;
+        }
+        
     }
 
     update() {
@@ -33,7 +55,7 @@ class Dino extends GameComponents {
         ctx.drawImage(newDinoImg, this.x, this.y, this.width, this.height); 
 
         if ( !this.roar ) {
-            this.roar = new Audio(audio.dinosaur);
+            this.roar = new Audio(audio.dinos[this.dinoID - 1]);
             this.roar.loop = false;
             this.roar.play();
         }
@@ -42,47 +64,89 @@ class Dino extends GameComponents {
 
 }
 
-const generateDinos = () => {
+const generateDino = (lane) => {
+
+    if ( game.frames < 500 ) { return; }
 
     // Check for dino crashes
-    for ( let i = 0 ; i < dinos.length ; i++ ) {
-        if ( checkDinoCrashes(dinos[i]) ) {
+    for ( let i = 0 ; i < dinosLane.length ; i++ ) {
+        if ( checkDinoCrashes(dinosLane[i]) ) {
+            stopCarHonks();
+            crashSound();
             stopAllDinos();
             game.isOn = false;
         }
     }
 
-    if (game.frames !== 0 && game.frames % 1500 === 0 && Math.random() >= .8) {
+    let height = 159;
+    let width = 40;
+
+    if (lane) { 
+        let dinoFileName = `dino-${checkLane(lane)}`; 
+    
+        if (lane === carLaneLeftToRight || lane === carLaneRightToLeft) {
+            let newH = width;
+            width = height;
+            height = newH;
+        }
+
+        //generate called dino on lane
+        setTimeout(() => { 
+            const newDino = new Dino(height, width, dinoFileName, lane)
+            lane.cars.push(newDino)
+        }, randomDelay() );
+    }
+
+    // randomly generates dinos
+    if ( game.frames % 1000 === 0 && Math.random() < .7 && countDinos() < 1 ) {
     
         let dinoFileName = `dino-TB`;
-        let height = 159;
-        let width = 40;
 
         setTimeout(() => { 
             const newDino = new Dino(height, width, dinoFileName)
-            dinos.push(newDino)
+            dinosLane.push(newDino)
         }, randomDelay() );
 
     }
 
     // Delete dinos out of canvas
     // Otherwise, make it move
-    dinos.forEach((dino, i) => {
+    dinosLane.forEach((dino, i) => {
 
         if ( dino.isOffCanvas() ) { 
-            dinos.splice(i, 1);
+            dinosLane.splice(i, 1);
         } else {
-            dino.y += 2.5;
+            dino.y += 1.5;
         }
         
         dino.update();
     });
 }
 
+const countDinos = () => {
+
+    let counter = 0;
+
+    carLanes.forEach(lane => {
+        lane.cars.forEach((car, i) => {
+            if (car.type === 'dino') {
+                counter++;
+            }
+        });
+    });
+
+    dinosLane.forEach(dino => {
+        counter++;
+    });
+
+    return counter;
+
+}
+
 const stopAllDinos = () => {
 
-    for ( let i = 0 ; i < dinos.length ; i++ ) {
-        dinos[i].isMoving = false;
+    for ( let i = 0 ; i < dinosLane.length ; i++ ) {
+        dinosLane[i].isMoving = false;
     }
     
 }
@@ -97,7 +161,7 @@ const checkDinoCrashes = (dinoObj) => {
         });
     });
     
-    let crashed = allCars.some(car => !( car.right() < dinoObj.left() + 8 || car.left() > dinoObj.right() - 8 || car.top() > dinoObj.bottom() - 30 || car.bottom() < dinoObj.top() + 50 ));
+    let crashed = allCars.some(car => !( car.right() < dinoObj.left() + 8 || car.left() > dinoObj.right() - 8 || car.top() > dinoObj.bottom() - 10 || car.bottom() < dinoObj.top() + 10 ));
     
     return crashed;
     

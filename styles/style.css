@@ -45,7 +45,21 @@ ul {
 li {
     display: flex;
     justify-content: space-between;
+    align-content: center;
     margin-bottom: 15px;
+    vertical-align: middle;
+}
+
+li img {
+    width: 18px;
+    padding-right: 10px;
+    height: auto;
+}
+
+li span {
+    display: flex;
+    align-items: center;
+    align-content: center;
 }
 
 li.none {

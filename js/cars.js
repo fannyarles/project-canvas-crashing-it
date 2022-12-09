@@ -96,10 +96,10 @@ class GameComponents {
 
     isOffCanvas() {
         return ( 
-            this.x > canvas.width + 60 || 
-            this.x < -60 ||
-            this.y > canvas.height + 60 || 
-            this.y < -60
+            this.x > canvas.width + this.height + 20 || 
+            this.x < - ( this.height + 20 ) ||
+            this.y > canvas.height + this.height + 20 || 
+            this.y < - ( this.height + 20 )
         );
     }
 
@@ -136,21 +136,14 @@ const updateCars = () => {
     for ( let i = 0 ; i < carLanes.length ; i++ ) {
         for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
             if ( checkCarCrashes(carLanes[i], carLanes[i].cars[j], j) ) {
-
-                // stop honks
                 stopCarHonks();
-
-                // handle crash sound
-                audioCrash.currentTime = 6.5;
-                audioCrash.volume = .7;
-                audioCrash.play();
-                game.isOn = false;
+                crashSound();
             }
         }
     }
 
     // Generate new car on a random lane
-    if (game.frames > 180 && game.frames % 60 === 0) {
+    if (game.frames > 180 && game.frames % 70 === 0) {
 
         let randCarNum = Math.floor(Math.random() * vehicules.length);
         while ( randCarNum === game.lastCar ) { randCarNum = Math.floor(Math.random() * 4) }
@@ -187,10 +180,17 @@ const updateCars = () => {
                 break;
         }
 
-        setTimeout(() => { 
-            const newCar = new Car(lane, height, width, carFileName, randCar.id)
-            lane.cars.push(newCar)
-        }, randomDelay() );  
+        if (Math.random() > .80 && countDinos() < 1) {
+
+            generateDino(lane);
+
+        } else {
+                
+            setTimeout(() => { 
+                const newCar = new Car(lane, height, width, carFileName, randCar.id)
+                lane.cars.push(newCar)
+            }, randomDelay() );  
+        }
 
     }
 
@@ -207,17 +207,17 @@ const updateCars = () => {
 
                     let speed = 3;
 
-                    if ( game.frames >= 1000 && car.carId === 2 && i === 0 ) { 
+                    if ( game.frames >= 1000 && car.carId === 2 && i === 0 && countDinos() === 0 ) { speed = 5.2;
                         
-                        speed = 5.2;
 
-                        if (!car.acc) {
+                        if (speed === 5.2 && !car.acc) {
                             const acceleration = new Audio(audio.acceleration);
                             acceleration.loop = false;
-                            acceleration.startDate = 4;
+                            acceleration.startDate = 1;
                             acceleration.play();
                             car.acc = acceleration;
                         }
+
                     }
 
                     switch(lane) {
@@ -257,24 +257,28 @@ const clickCar = (x, y) => {
                 carLanes[i].cars[j].left() > x ||
                 carLanes[i].cars[j].right() < x
             ) ) {
-                carLanes[i].cars[j].isMoving = !carLanes[i].cars[j].isMoving;
 
-                if (!carLanes[i].cars[j].isMoving) {
+                if (carLanes[i].cars[j].type !== 'dino') {
 
-                    const audioCarHonk = audio.honks[carLanes[i].cars[j].carId - 1];
-                    const audioHonk = new Audio(audioCarHonk);
-                    carLanes[i].cars[j].honk = audioHonk;
-                    audioHonk.volume = 0.3;
-                    audioHonk.loop = true;
-                    audioHonk.play();
+                    carLanes[i].cars[j].isMoving = !carLanes[i].cars[j].isMoving;
 
-                } else {
-                
-                    const honkToStop = carLanes[i].cars[j].honk;
-                    honkToStop.pause();
-                    delete carLanes[i].cars[j].honk;
+                    if (!carLanes[i].cars[j].isMoving) {
+
+                        const audioCarHonk = audio.honks[carLanes[i].cars[j].carId - 1];
+                        const audioHonk = new Audio(audioCarHonk);
+                        carLanes[i].cars[j].honk = audioHonk;
+                        audioHonk.volume = 0.3;
+                        audioHonk.loop = true;
+                        audioHonk.play();
+
+                    } else {
                     
-                }
+                        const honkToStop = carLanes[i].cars[j].honk;
+                        honkToStop.pause();
+                        delete carLanes[i].cars[j].honk;
+                        
+                    }
+                }   
 
             }
         }
@@ -287,6 +291,7 @@ const stopCarHonks = () => {
     // Handle click on cars
     for ( let i = 0 ; i < carLanes.length ; i++ ) {
         for ( let j = 0 ; j < carLanes[i].cars.length ; j++ ) {
+            carLanes[i].cars[j].isMoving = false;
             if (carLanes[i].cars[j].honk) {
                 carLanes[i].cars[j].honk.pause();
             }
