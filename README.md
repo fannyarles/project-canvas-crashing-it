@@ -28,15 +28,43 @@ Crashing It puts the player in charge of traffic control at a crossroad. They ha
 
 _List of classes and methods_
 
-## States y States Transitions
+### game.js
 
-_List of states (views) of your game_
+- class Game
+- class GameComponents
+- displayGame()
+- displaySplashScreen()
+- displayGameOverScreen()
+- updateGame()
+- drawBackground()
+- clearGame()
+- handleSounds()
+- checkLane()
 
-## Task
+### cars.js
 
-_List of tasks in order of priority_
+- class Car extends GameComponents
+- updateCars()
+- clickCar()
+- stopCarHonks()
+- checkCarCrashes()
+
+### dinos.js
+
+- class Dino extends GameComponents
+- generateDino()
+- countDinos()
+- stopAllDinos()
+- checkDinoCrashes()
+
+## States and States Transitions
+
+- displayGame
+- displaySplashScreen
+- displayGameOverScreen
 
 ## Links
 
 - [Github repository Link](https://github.com/fannyarles/project-canvas-traffic-jam)
 - [Deployment Link](https://fannyarles.github.io/project-canvas-traffic-jam/)
+- [Slides](https://docs.google.com/presentation/d/1Lg7rUDJ1BFEPtbAJYlU0vz3V8GCWV0fd-91CX-pJyvo/)
