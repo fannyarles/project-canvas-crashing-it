@@ -1,5 +1,6 @@
 # Crashing It!
 
+![Game screenshot](https://github.com/[username]/[reponame]/[branch]/imgs/screenshot.jpg?raw=true)
 [Click here to see deployed game](https://fannyarles.github.io/project-canvas-traffic-jam/)
 
 ## Description
